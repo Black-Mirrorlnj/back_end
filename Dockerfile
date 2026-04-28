@@ -13,18 +13,14 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-RUN addgroup -S matchvagas && adduser -S matchvagas -G matchvagas
+RUN addgroup -S appuser && adduser -S appuser -G appuser
 
 COPY --from=build /app/target/*.jar app.jar
 
-RUN chown matchvagas:matchvagas app.jar
+RUN chown appuser:appuser app.jar
 
-USER matchvagas
+USER appuser
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", \
-  "-XX:+UseContainerSupport", \
-  "-XX:MaxRAMPercentage=75.0", \
-  "-Djava.security.egd=file:/dev/./urandom", \
-  "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
