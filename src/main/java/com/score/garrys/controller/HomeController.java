@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "Backend Score QMod rodando no Railway!";
+        return "Backend Score GMod rodando no Railway!";
     }
 }
