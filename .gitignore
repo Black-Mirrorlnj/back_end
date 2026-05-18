@@ -13,6 +13,7 @@ target/
 .springBeans
 .sts4-cache
 
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -34,6 +35,7 @@ build/
 
 # Spring config local
 src/main/resources/application.properties
+src/main/resources/application.yml
 
 # Arquivos locais de ambiente
 .env
