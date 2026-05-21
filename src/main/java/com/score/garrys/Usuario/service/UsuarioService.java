@@ -6,6 +6,7 @@ import com.score.garrys.Usuario.mapper.UsuarioMapper;
 import com.score.garrys.Usuario.model.Usuario;
 import com.score.garrys.Usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,16 +16,17 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Usuario salvar(Usuario usuario) {
         if (usuarioRepository.existsByLogin(usuario.getLogin())) {
             throw new RuntimeException("Login já cadastrado");
         }
-
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado");
         }
-
+        // Criptografa a senha antes de salvar
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -44,29 +46,36 @@ public class UsuarioService {
 
     public Usuario atualizar(Long id, UsuarioRequestDTO dto) {
         Usuario usuario = buscarPorId(id);
-
-        if (!usuario.getLogin().equals(dto.getLogin()) && usuarioRepository.existsByLogin(dto.getLogin())) {
+        if (!usuario.getLogin().equals(dto.getLogin())
+                && usuarioRepository.existsByLogin(dto.getLogin())) {
             throw new RuntimeException("Login já cadastrado");
         }
-
-        if (!usuario.getEmail().equals(dto.getEmail()) && usuarioRepository.existsByEmail(dto.getEmail())) {
+        if (!usuario.getEmail().equals(dto.getEmail())
+                && usuarioRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado");
         }
-
         UsuarioMapper.updateEntity(usuario, dto);
+
+        // Recriptografa a senha se foi alterada
+        if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
+            usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 
     public void deletar(Long id) {
-        Usuario usuario = buscarPorId(id);
-        usuarioRepository.delete(usuario);
+        usuarioRepository.delete(buscarPorId(id));
     }
 
     public Usuario login(UsuarioLoginRequestDTO dto) {
+        // Busca por login OU email
         Usuario usuario = usuarioRepository.findByLogin(dto.getLogin())
+                .or(() -> usuarioRepository.findByEmail(dto.getLogin()))
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        if (!usuario.getSenha().equals(dto.getSenha())) {
+        // Compara senha com BCrypt
+        if (!passwordEncoder.matches(dto.getSenha(), usuario.getSenha())) {
             throw new RuntimeException("Senha inválida");
         }
 
