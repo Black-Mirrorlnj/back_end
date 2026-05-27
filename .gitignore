@@ -33,12 +33,7 @@ build/
 ### VS Code ###
 .vscode/
 
-# Spring config local
-src/main/resources/application.properties
-src/main/resources/application.yml
-
 # Arquivos locais de ambiente
 .env
 .env.*
 .application-properties
-.application-*.yml
