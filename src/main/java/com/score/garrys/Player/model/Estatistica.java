@@ -16,31 +16,37 @@ public class Estatistica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jogador_id", nullable = false, unique = true)
+   @Column(name = "jogador_id", nullable = false)
     private Long jogadorId;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer kills = 0;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer deaths = 0;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer dinheiro = 0;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 1")
     private Integer nivel = 1;
 
-    @Column(nullable = false)
     @Builder.Default
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer experiencia = 0;
 
-    @Column(name = "tempo_jogado", nullable = false)
     @Builder.Default
+    @Column(name = "tempo_jogado", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer tempoJogado = 0;
+
+    @Transient
+    public Double getKDRatio() {
+        if (deaths == null || deaths == 0) return kills == 0 ? 0.0 : kills.doubleValue();
+        return (double) kills / deaths;
+    }
 
 }

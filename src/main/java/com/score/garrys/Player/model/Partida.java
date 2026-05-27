@@ -2,7 +2,7 @@ package com.score.garrys.Player.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.List;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,12 +18,16 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String mapa;
 
-    @Column(name = "data_inicio", nullable = false)
+    @Column(name = "data_inicio")
     private LocalDateTime dataInicio;
 
     @Column(name = "data_fim")
     private LocalDateTime dataFim;
+
+    //Partida tem muitas pontuações
+    @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pontuacao> pontuacoes;
 }
