@@ -17,10 +17,10 @@ public class Pontuacao {
     private Long id;
 
     @Column(name = "jogador_id")
-    private Long jogadorId;  // ← Long simples, getJogadorId() gerado pelo Lombok
+    private Long jogadorId;  
 
     @Column(name = "partida_id")
-    private Long partidaId;  // ← Long simples, getPartidaId() gerado pelo Lombok
+    private Long partidaId;  
 
     @Builder.Default
     @Column(name = "score_inicial", columnDefinition = "INT DEFAULT 0")

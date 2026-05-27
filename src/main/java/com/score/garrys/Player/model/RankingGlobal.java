@@ -14,7 +14,7 @@ public class RankingGlobal {
 
     @Id
     @Column(name = "jogador_id")
-    private Long jogadorId;  // ← É a PK e também a FK, getJogadorId() gerado pelo Lombok
+    private Long jogadorId; 
 
     @Builder.Default
     @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
