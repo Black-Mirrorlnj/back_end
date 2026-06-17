@@ -16,7 +16,7 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder; // ← injetado do SecurityConfig
 
     public Usuario salvar(Usuario usuario) {
         if (usuarioRepository.existsByLogin(usuario.getLogin())) {
@@ -25,7 +25,7 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado");
         }
-        // Criptografa a senha antes de salvar
+        // Criptografa a senha antes de salvar no banco
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
@@ -74,7 +74,7 @@ public class UsuarioService {
                 .or(() -> usuarioRepository.findByEmail(dto.getLogin()))
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        // Compara senha com BCrypt
+        // BCrypt compara a senha digitada com o hash salvo no banco
         if (!passwordEncoder.matches(dto.getSenha(), usuario.getSenha())) {
             throw new RuntimeException("Senha inválida");
         }
