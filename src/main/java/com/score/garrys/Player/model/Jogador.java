@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "jogadores")
@@ -30,18 +29,6 @@ public class Jogador {
 
     @Column(name = "criado_em", insertable = false, updatable = false)
     private LocalDateTime criadoEm;
-
-    //Relacionamento com Estatistica
-    @OneToOne(mappedBy = "jogador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Estatistica estatistica;
-
-    //Relacionamento com Ranking
-    @OneToOne(mappedBy = "jogador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private RankingGlobal rankingGlobal;
-
-    //Relacionamento com Pontuacao
-    @OneToMany(mappedBy = "jogador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pontuacao> pontuacoes;
 
     //Definir horario
     @PrePersist
