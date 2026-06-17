@@ -2,7 +2,6 @@ package com.score.garrys.Player.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,7 +26,4 @@ public class Partida {
     @Column(name = "data_fim")
     private LocalDateTime dataFim;
 
-    //Partida tem muitas pontuações
-    @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pontuacao> pontuacoes;
-}
+    }
