@@ -1,0 +1,7 @@
+{
+    "name": "ScoreSync",
+    "version": "1.0",
+    "description": "Sincroniza dados com o GmodScore App",
+    "author": "Luciano",
+    "type": "serverside"
+}
