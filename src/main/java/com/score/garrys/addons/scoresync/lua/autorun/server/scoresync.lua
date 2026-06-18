@@ -8,7 +8,7 @@
 -- ══════════════════════════════════════════
 local CONFIG = {
     API_URL  = "backend-production-e03f.up.railway.app", -- URL do seu backend
-    API_KEY  = "MinhaChaveSecreta123",  -- chave de autenticação (configure no backend)
+    API_KEY  = "${SCORESYNC_API_KEY}",  -- chave de autenticação (configure no backend)
     GAMEMODE = "Deathmatch",
     DEBUG    = true  -- mostra logs no console do servidor (mude para false em produção)
 }
