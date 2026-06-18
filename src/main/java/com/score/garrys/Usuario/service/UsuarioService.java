@@ -5,6 +5,9 @@ import com.score.garrys.Usuario.dto.UsuarioRequestDTO;
 import com.score.garrys.Usuario.mapper.UsuarioMapper;
 import com.score.garrys.Usuario.model.Usuario;
 import com.score.garrys.Usuario.repository.UsuarioRepository;
+import com.score.garrys.Player.repository.JogadorRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
+import com.score.garrys.Player.repository.RankingGlobalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,10 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder; // ← injetado do SecurityConfig
+    private final PasswordEncoder passwordEncoder;
+    private final JogadorRepository jogadorRepository;
+    private final EstatisticasRepository estatisticasRepository;
+    private final RankingGlobalRepository rankingGlobalRepository;
 
     public Usuario salvar(Usuario usuario) {
         if (usuarioRepository.existsByLogin(usuario.getLogin())) {
@@ -27,7 +33,34 @@ public class UsuarioService {
         }
         // Criptografa a senha antes de salvar no banco
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        return usuarioRepository.save(usuario);
+        // Salva o usuário e obtém o objeto salvo
+        usuario = usuarioRepository.save(usuario);
+        // Cria jogador vinculado ao usuário
+        com.score.garrys.Player.model.Jogador novoJogador = com.score.garrys.Player.model.Jogador.builder()
+                .usuarioId(usuario.getId())
+                .nome(usuario.getNome())
+                .steamId("PENDENTE_" + usuario.getId())
+                .build();
+        jogadorRepository.save(novoJogador);
+        // Cria estatísticas zeradas para o jogador
+        com.score.garrys.Player.model.Estatistica stats = com.score.garrys.Player.model.Estatistica.builder()
+                .jogadorId(novoJogador.getId())
+                .kills(0)
+                .deaths(0)
+                .dinheiro(0)
+                .nivel(1)
+                .experiencia(0)
+                .tempoJogado(0)
+                .build();
+        estatisticasRepository.save(stats);
+        // Cria entrada zerada no ranking global
+        com.score.garrys.Player.model.RankingGlobal ranking = com.score.garrys.Player.model.RankingGlobal.builder()
+                .jogadorId(novoJogador.getId())
+                .pontos(0)
+                .posicao(null)
+                .build();
+        rankingGlobalRepository.save(ranking);
+        return usuario;
     }
 
     public Usuario criar(UsuarioRequestDTO dto) {
@@ -54,7 +87,7 @@ public class UsuarioService {
                 && usuarioRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado");
         }
-        UsuarioMapper.updateEntity(usuario, dto);
+        com.score.garrys.Usuario.mapper.UsuarioMapper.updateEntity(usuario, dto);
 
         // Recriptografa a senha se foi alterada
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
@@ -84,5 +117,27 @@ public class UsuarioService {
         }
 
         return usuario;
+    }
+
+    // Novo metodo: retorna response DTO de login já contendo jogadorId
+    public com.score.garrys.Usuario.dto.UsuarioResponseDTO loginComJogador(UsuarioLoginRequestDTO dto) {
+        Usuario usuario = login(dto);
+        Long jogadorId = jogadorRepository.findByUsuarioId(usuario.getId())
+                .map(com.score.garrys.Player.model.Jogador::getId)
+                .orElse(null);
+        com.score.garrys.Usuario.dto.UsuarioResponseDTO response = com.score.garrys.Usuario.mapper.UsuarioMapper.toResponseDTO(usuario);
+        response.setJogadorId(jogadorId);
+        return response;
+    }
+
+    // Novo metodo: ao criar usuario, retorna response DTO já com jogadorId
+    public com.score.garrys.Usuario.dto.UsuarioResponseDTO criarComJogador(UsuarioRequestDTO dto) {
+        Usuario usuario = criar(dto);
+        Long jogadorId = jogadorRepository.findByUsuarioId(usuario.getId())
+                .map(com.score.garrys.Player.model.Jogador::getId)
+                .orElse(null);
+        com.score.garrys.Usuario.dto.UsuarioResponseDTO response = com.score.garrys.Usuario.mapper.UsuarioMapper.toResponseDTO(usuario);
+        response.setJogadorId(jogadorId);
+        return response;
     }
 }

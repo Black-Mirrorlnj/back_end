@@ -2,7 +2,7 @@ package com.score.garrys.Usuario.service;
 
 import com.score.garrys.Player.model.Estatistica;
 import com.score.garrys.Player.model.Jogador;
-import com.score.garrys.Player.repository.EstatisticaRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
 import com.score.garrys.Player.repository.JogadorRepository;
 import com.score.garrys.Usuario.dto.sync.RoundSyncItemResponseDTO;
 import com.score.garrys.Usuario.dto.sync.RoundSyncPlayerDTO;
@@ -22,7 +22,7 @@ import java.util.List;
 public class RoundSyncService {
 
     private final JogadorRepository jogadorRepository;
-    private final EstatisticaRepository estatisticaRepository;
+    private final EstatisticasRepository estatisticaRepository;
     private final LogSincronizacaoRoundRepository logSincronizacaoRoundRepository;
 
     public RoundSyncResponseDTO sincronizar(RoundSyncRequestDTO dto) {

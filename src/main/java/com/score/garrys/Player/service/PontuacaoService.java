@@ -5,7 +5,7 @@ package com.score.garrys.Player.service;
 import com.score.garrys.Player.model.Estatistica;
 import com.score.garrys.Player.model.Pontuacao;
 import com.score.garrys.Player.model.RankingGlobal;
-import com.score.garrys.Player.repository.EstatisticaRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
 import com.score.garrys.Player.repository.PontuacaoRepository;
 import com.score.garrys.Player.repository.RankingGlobalRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PontuacaoService {
 
     private final PontuacaoRepository pontuacaoRepository;
-    private final EstatisticaRepository estatisticaRepository;
+    private final EstatisticasRepository estatisticaRepository;
     private final RankingGlobalRepository rankingGlobalRepository;
 
     public Pontuacao criar(Pontuacao pontuacao) {

@@ -15,4 +15,10 @@ public class UsuarioResponseDTO {
     private String perfil;
     private Boolean ativo;
     private LocalDateTime criadoEm;
+    private Long jogadorId;
+    
+    public void setJogadorId(Long jogadorId) {
+        this.jogadorId = jogadorId;
+    }
+
 }

@@ -20,8 +20,7 @@ public class UsuarioController {
 
     @PostMapping
     public UsuarioResponseDTO criar(@RequestBody UsuarioRequestDTO dto) {
-        Usuario usuario = usuarioService.criar(dto);
-        return UsuarioMapper.toResponseDTO(usuario);
+        return usuarioService.criarComJogador(dto);
     }
 
     @GetMapping
@@ -51,7 +50,6 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public UsuarioResponseDTO login(@RequestBody UsuarioLoginRequestDTO dto) {
-        Usuario usuario = usuarioService.login(dto);
-        return UsuarioMapper.toResponseDTO(usuario);
+        return usuarioService.loginComJogador(dto);
     }
 }

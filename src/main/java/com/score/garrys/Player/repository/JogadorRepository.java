@@ -11,11 +11,14 @@ public interface JogadorRepository extends JpaRepository<Jogador, Long> {
     //Buscar jogador por steamId
     Optional<Jogador> findBySteamId(String steamId);
 
-    //Verificar se jogador existe por steamId
-    boolean existsBySteamId(String steamId);
+     //Verificar se jogador existe por steamId
+     boolean existsBySteamId(String steamId);
 
-    //Buscar jogadores por nome (contendo parte do nome)
-    List<Jogador> findByNomeContainingIgnoreCase(String nome);
+     //Buscar jogador por usuarioId
+     Optional<Jogador> findByUsuarioId(Long usuarioId);
+
+     //Buscar jogadores por nome (contendo parte do nome)
+     List<Jogador> findByNomeContainingIgnoreCase(String nome);
 
     
 }

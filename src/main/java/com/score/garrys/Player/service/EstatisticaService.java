@@ -3,7 +3,7 @@ package com.score.garrys.Player.service;
 
 
 import com.score.garrys.Player.model.Estatistica;
-import com.score.garrys.Player.repository.EstatisticaRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EstatisticaService {
 
-    private final EstatisticaRepository estatisticaRepository;
+    private final EstatisticasRepository estatisticaRepository;
 
     public List<Estatistica> listar() {
         return estatisticaRepository.findAll();

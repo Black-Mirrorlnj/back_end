@@ -2,7 +2,7 @@ package com.score.garrys.Visitante.service;
 
 import com.score.garrys.Player.model.Estatistica;
 import com.score.garrys.Player.model.Jogador;
-import com.score.garrys.Player.repository.EstatisticaRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
 import com.score.garrys.Player.repository.JogadorRepository;
 import com.score.garrys.Visitante.dto.playtime.PlaytimeRequestDTO;
 import com.score.garrys.Visitante.dto.playtime.PlaytimeResponseDTO;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class PlaytimeService {
 
     private final JogadorRepository jogadorRepository;
-    private final EstatisticaRepository estatisticaRepository;
+    private final EstatisticasRepository estatisticaRepository;
     private final PlaytimeCheckpointRepository playtimeCheckpointRepository;
     private final LogPlaytimeRepository logPlaytimeRepository;
 

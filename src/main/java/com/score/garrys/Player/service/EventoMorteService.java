@@ -4,7 +4,7 @@ import com.score.garrys.Player.dto.evento.EventoMorteRequestDTO;
 import com.score.garrys.Player.model.Estatistica;
 import com.score.garrys.Player.model.EventoMorte;
 import com.score.garrys.Player.model.Jogador;
-import com.score.garrys.Player.repository.EstatisticaRepository;
+import com.score.garrys.Player.repository.EstatisticasRepository;
 import com.score.garrys.Player.repository.EventoMorteRepository;
 import com.score.garrys.Player.repository.JogadorRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class EventoMorteService {
 
     private final EventoMorteRepository eventoMorteRepository;
     private final JogadorRepository jogadorRepository;
-    private final EstatisticaRepository estatisticaRepository;
+    private final EstatisticasRepository estatisticaRepository;
 
     public EventoMorte registrar(EventoMorteRequestDTO dto) {
         validarSteamId64(dto.getKillerId(), "killerId");

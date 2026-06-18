@@ -31,6 +31,10 @@ public class Jogador {
     private LocalDateTime criadoEm;
 
     //Definir horario
+
+
+    @Column(name = "usuario_id", nullable = false)
+    private Long usuarioId;
     @PrePersist
     protected void onCreate() {
         this.criadoEm = LocalDateTime.now();
